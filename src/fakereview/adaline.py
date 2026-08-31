@@ -129,7 +129,7 @@ class AdalineGD(ClassifierMixin, BaseEstimator):
     # ------------------------------------------------------------------
     # Training
     # ------------------------------------------------------------------
-    def fit(self, X, y) -> "AdalineGD":
+    def fit(self, X, y) -> AdalineGD:
         """Fit the model with batch gradient descent.
 
         Parameters

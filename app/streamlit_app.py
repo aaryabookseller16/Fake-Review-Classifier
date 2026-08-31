@@ -38,8 +38,8 @@ import altair as alt  # noqa: E402
 import joblib  # noqa: E402
 import pandas as pd  # noqa: E402
 import streamlit as st  # noqa: E402
-
 import theme  # noqa: E402
+
 from fakereview.data import CLASS_NAMES  # noqa: E402
 from fakereview.evaluate import load_report  # noqa: E402
 from fakereview.features import extract, feature_names  # noqa: E402
@@ -439,7 +439,7 @@ elif page == "Benchmark":
             r = report["results"].get(key)
             if not r or "roc" not in r:
                 continue
-            for fpr, tpr in zip(r["roc"]["fpr"], r["roc"]["tpr"]):
+            for fpr, tpr in zip(r["roc"]["fpr"], r["roc"]["tpr"], strict=True):
                 roc_rows.append({"Model": spec.label, "FPR": fpr, "TPR": tpr})
         if roc_rows:
             diagonal = (
@@ -637,24 +637,23 @@ elif page == "Method":
         "TF-IDF representation:"
     )
 
+    # Accuracy / AUC are held as pre-formatted strings so the diverged rows can
+    # read "--" rather than an empty numeric cell.
     sweep = pd.DataFrame(
         [
-            {"Learning rate": "0.1", "Accuracy": 0.9488, "ROC AUC": 0.9885, "Outcome": "converges · final MSE 0.0316"},
-            {"Learning rate": "0.3", "Accuracy": 0.9486, "ROC AUC": 0.9880, "Outcome": "converges · final MSE 0.0137"},
-            {"Learning rate": "0.5", "Accuracy": 0.9429, "ROC AUC": 0.9865, "Outcome": "converges · final MSE 0.0081"},
-            {"Learning rate": "0.7", "Accuracy": None, "ROC AUC": None, "Outcome": "diverges at epoch 36"},
-            {"Learning rate": "1.0", "Accuracy": None, "ROC AUC": None, "Outcome": "diverges at epoch 10"},
+            {"Learning rate": "0.1", "Accuracy": "0.9488", "ROC AUC": "0.9885",
+             "Outcome": "converges · final MSE 0.0316"},
+            {"Learning rate": "0.3", "Accuracy": "0.9486", "ROC AUC": "0.9880",
+             "Outcome": "converges · final MSE 0.0137"},
+            {"Learning rate": "0.5", "Accuracy": "0.9429", "ROC AUC": "0.9865",
+             "Outcome": "converges · final MSE 0.0081"},
+            {"Learning rate": "0.7", "Accuracy": "—", "ROC AUC": "—",
+             "Outcome": "diverges at epoch 36"},
+            {"Learning rate": "1.0", "Accuracy": "—", "ROC AUC": "—",
+             "Outcome": "diverges at epoch 10"},
         ]
     )
-    st.dataframe(
-        sweep,
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "Accuracy": st.column_config.NumberColumn(format="%.4f"),
-            "ROC AUC": st.column_config.NumberColumn(format="%.4f"),
-        },
-    )
+    st.dataframe(sweep, use_container_width=True, hide_index=True)
 
     callout(
         "Two things worth noticing. Lower learning rates reach a <b>better</b> "

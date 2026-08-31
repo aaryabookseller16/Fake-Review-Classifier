@@ -197,15 +197,21 @@ features rather than reason about them.
 
 A three-page Streamlit app ([`app/streamlit_app.py`](app/streamlit_app.py)):
 
-- **Classify a review** — paste any text, pick any of the five trained models, get a
-  prediction with the raw decision score and the extracted interpretable features. Preloaded
-  examples are **real held-out reviews with their true labels in the name**, so the model can
-  be checked against ground truth rather than against intuition.
-- **Model comparison** — the benchmark table, an accuracy bar chart, ROC curves for all five
-  models, and a per-model confusion matrix. Read directly from `reports/metrics.json`, so the
+- **Classify** — paste any text, pick any of the five trained models, get a prediction with
+  a confidence meter and the extracted interpretable features. Preloaded examples are **real
+  held-out reviews with their true labels in the name**, so the model can be checked against
+  ground truth rather than against intuition.
+- **Benchmark** — the results table, an accuracy bar chart, ROC curves for all five models,
+  and a per-model confusion matrix. Read directly from `reports/metrics.json`, so the
   displayed numbers cannot drift from the ones training produced.
-- **How it works** — the update rule, the live training curve, and the learning-rate
-  divergence table.
+- **Method** — the update rule, the live training curve, and the learning-rate stability
+  table.
+
+The interface has its own small design system in [`app/theme.py`](app/theme.py): one
+palette, one type scale, one motion curve, and dark mode driven by `prefers-color-scheme`.
+Navigation is a sidebar radio rather than `st.tabs` on purpose — Streamlit measures widgets
+inside an inactive tab as zero-width, so charts placed on a second tab render collapsed and
+never re-measure.
 
 ### Deploying
 
@@ -233,7 +239,8 @@ a stack trace at the visitor.
 
 ```
 ├── app/
-│   └── streamlit_app.py       # 3-page web UI
+│   ├── streamlit_app.py       # 3-page web UI
+│   └── theme.py               # design system: palette, type, motion
 ├── data/
 │   └── fake_reviews_dataset.csv
 ├── models/                    # trained pipelines (generated)
@@ -243,7 +250,7 @@ a stack trace at the visitor.
 │   ├── adaline.py             # the from-scratch classifier
 │   ├── features.py            # interpretable feature extractors
 │   ├── data.py                # loading, splitting, the label convention
-│   ├── pipelines.py           # the four benchmark configurations
+│   ├── pipelines.py           # the five benchmark configurations
 │   ├── evaluate.py            # metric computation + report I/O
 │   └── train.py               # CLI entry point
 ├── scripts/
@@ -313,7 +320,7 @@ Coverage is aimed at the things that actually broke, not at a line-count target:
   Platt scaling on a validation split would make the confidence number meaningful and let the
   threshold be tuned against an explicit false-positive budget.
 - **Cross-validation.** Every number here is a single 80/20 split. 5-fold CV would put error
-  bars on the 0.18pp Adaline-vs-sklearn gap, which is currently too small to call
+  bars on the 0.41pp Adaline-vs-sklearn gap, which is currently too small to call
   significant.
 - **A transformer baseline.** A fine-tuned DistilBERT would likely clear 97% and would
   quantify what the linear models leave behind.

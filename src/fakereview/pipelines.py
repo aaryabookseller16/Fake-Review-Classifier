@@ -1,22 +1,24 @@
-"""The four model configurations this project benchmarks.
+"""The five model configurations this project benchmarks.
 
-The point of the project is a controlled comparison. Each pipeline changes
-exactly one thing relative to its neighbour, so the resulting accuracy
-differences are attributable:
+The point of the project is a controlled comparison: a 2x2 of representation
+against learning algorithm, plus one extra representation tier in the middle.
+Each pipeline changes exactly one thing relative to its neighbour, so the
+resulting accuracy differences are attributable.
 
-============================  ==================  ====================
-pipeline                      representation      classifier
-============================  ==================  ====================
-``handcrafted-adaline``       3 surface features  Adaline (from scratch)
-``extended-adaline``          10 surface features Adaline (from scratch)
-``tfidf-adaline``             TF-IDF 1-2 grams    Adaline (from scratch)
-``tfidf-logreg``              TF-IDF 1-2 grams    sklearn LogisticRegression
-============================  ==================  ====================
+============================  ===================  ==========================
+pipeline                      representation       classifier
+============================  ===================  ==========================
+``handcrafted-adaline``       3 surface features   Adaline (from scratch)
+``handcrafted-logreg``        3 surface features   sklearn LogisticRegression
+``extended-adaline``          10 surface features  Adaline (from scratch)
+``tfidf-adaline``             TF-IDF 1-2 grams     Adaline (from scratch)
+``tfidf-logreg``              TF-IDF 1-2 grams     sklearn LogisticRegression
+============================  ===================  ==========================
 
-Reading down the first three rows isolates the effect of the *representation*
-while holding the learning algorithm fixed. Comparing the last two isolates
-the effect of the *optimiser* while holding the representation fixed -- which
-is what validates the from-scratch implementation.
+Holding the classifier fixed and varying the representation isolates the
+effect of the features. Holding the representation fixed and varying the
+classifier (rows 1 vs 2, and rows 4 vs 5) isolates the effect of the optimiser
+and loss function -- which is what validates the from-scratch implementation.
 
 Everything is wrapped in a scikit-learn ``Pipeline`` so that fitting,
 prediction and persistence are a single object, and so the vectoriser's
@@ -53,7 +55,7 @@ class HandcraftedFeatures(BaseEstimator, TransformerMixin):
     def __init__(self, feature_set: str = "basic") -> None:
         self.feature_set = feature_set
 
-    def fit(self, X, y=None) -> "HandcraftedFeatures":
+    def fit(self, X, y=None) -> HandcraftedFeatures:
         self.feature_names_ = feature_names(self.feature_set)
         return self
 
