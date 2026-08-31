@@ -1,0 +1,10 @@
+# No `base` is set on purpose: Streamlit then follows the visitor's system
+# light/dark preference, which is the same signal the custom stylesheet in
+# app/theme.py keys off via `prefers-color-scheme`. Pinning base = "light"
+# here makes Streamlit's own chrome fight the stylesheet in dark mode.
+[theme]
+primaryColor = "#4f46e5"
+font = "sans serif"
+
+[server]
+headless = true

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fakereview"
+version = "1.0.0"
+description = "Fake review detection with an Adaline classifier written from scratch, benchmarked against scikit-learn."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Aarya Bookseller" }]
+license = { text = "MIT" }
+keywords = ["machine-learning", "nlp", "adaline", "gradient-descent", "text-classification"]
+
+dependencies = [
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "scipy>=1.13",
+    "scikit-learn>=1.5",
+    "joblib>=1.4",
+]
+
+[project.optional-dependencies]
+app = ["streamlit>=1.40", "altair>=5.4"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+fakereview-train = "fakereview.train:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
