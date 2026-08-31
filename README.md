@@ -1,5 +1,8 @@
 # Fake Review Detector
 
+<!-- Deploy at share.streamlit.io (repo: this one, main file: app/streamlit_app.py),
+     then replace REPLACE_WITH_DEMO_URL below with the URL it gives you. -->
+[![live demo](https://img.shields.io/badge/live%20demo-open-4f46e5)](REPLACE_WITH_DEMO_URL)
 [![tests](https://github.com/aaryabookseller16/Fake-Review-Classifier/actions/workflows/tests.yml/badge.svg)](https://github.com/aaryabookseller16/Fake-Review-Classifier/actions/workflows/tests.yml)
 ![python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
@@ -217,9 +220,9 @@ never re-measure.
 
 The app is deploy-ready for [Streamlit Community Cloud](https://share.streamlit.io) (free):
 
-1. Push this repository to GitHub.
-2. On share.streamlit.io: **New app** → pick the repo → main file `app/streamlit_app.py`.
-3. Deploy.
+1. On share.streamlit.io: **New app** → pick this repo.
+2. Set the main file to `app/streamlit_app.py`.
+3. Deploy, then paste the resulting URL into the `live demo` badge at the top of this file.
 
 Two things make this work with no extra configuration:
 
