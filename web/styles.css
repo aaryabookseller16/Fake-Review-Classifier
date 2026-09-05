@@ -113,9 +113,9 @@ a {
   gap: 10px;
   width: max-content;
   color: var(--ink);
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.09em;
   text-decoration: none;
 }
 
@@ -1343,6 +1343,11 @@ textarea:focus-visible {
   .brand small,
   .source-link {
     display: none;
+  }
+
+  .brand {
+    font-size: 13px;
+    letter-spacing: 0.05em;
   }
 
   .hero-grid {
