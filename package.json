@@ -1,5 +1,5 @@
 {
-  "name": "verite-review-intelligence",
+  "name": "review-lens",
   "version": "1.0.0",
   "private": true,
   "description": "A browser-native demo for the Fake Review Classifier research project.",

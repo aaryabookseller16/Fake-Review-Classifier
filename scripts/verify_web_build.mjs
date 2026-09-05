@@ -15,7 +15,7 @@ const html = await readFile("web/index.html", "utf8");
 const model = JSON.parse(await readFile("web/model.json", "utf8"));
 const modelSize = (await stat("web/model.json")).size;
 
-if (!html.includes("VÉRITÉ") || !html.includes('id="analysis-form"')) {
+if (!html.includes("REVIEW LENS") || !html.includes('id="analysis-form"')) {
   throw new Error("The production page is missing its brand or analysis form.");
 }
 

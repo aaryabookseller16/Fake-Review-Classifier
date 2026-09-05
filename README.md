@@ -1,4 +1,4 @@
-# Vérité — Fake Review Classifier
+# Review Lens — Fake Review Classifier
 
 [![Tests](https://github.com/aaryabookseller16/Fake-Review-Classifier/actions/workflows/tests.yml/badge.svg)](https://github.com/aaryabookseller16/Fake-Review-Classifier/actions/workflows/tests.yml)
 ![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12-1d211c)
