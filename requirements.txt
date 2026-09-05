@@ -1,5 +1,5 @@
 # Python 3.12 uses the exact versions that produced the committed results.
-# NumPy 2.4 is the latest compatible line for the supported Python 3.11 runner.
+# NumPy 2.4 and SciPy 1.17 are the compatible lines for Python 3.11.
 # Reproduce the benchmark table in the README with:
 #   PYTHONPATH=src python -m fakereview.train
 
@@ -7,7 +7,8 @@
 numpy==2.4.6; python_version < "3.12"
 numpy==2.5.2; python_version >= "3.12"
 pandas==3.0.5
-scipy==1.18.1
+scipy==1.17.1; python_version < "3.12"
+scipy==1.18.1; python_version >= "3.12"
 
 # Modelling + persistence
 scikit-learn==1.9.0
