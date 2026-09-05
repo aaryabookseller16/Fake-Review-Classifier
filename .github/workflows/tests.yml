@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  python:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -39,3 +39,19 @@ jobs:
         # Catches a broken import or a syntax error in the Streamlit app
         # without needing to boot a browser.
         run: python -c "import ast, pathlib; ast.parse(pathlib.Path('app/streamlit_app.py').read_text())"
+
+  website:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Test browser inference
+        run: npm test
+
+      - name: Verify production bundle
+        run: npm run build

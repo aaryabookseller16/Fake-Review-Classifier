@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f2efe6" />
+    <meta
+      name="description"
+      content="Vérité is an interactive fake-review detector built around a from-scratch Adaline classifier trained on 40,432 Amazon reviews."
+    />
+    <meta property="og:title" content="Vérité — Review Intelligence" />
+    <meta
+      property="og:description"
+      content="An honest, interactive machine-learning study of computer-generated product reviews."
+    />
+    <meta property="og:type" content="website" />
+    <title>Vérité — Review Intelligence</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+      <a class="brand" href="#analyse" aria-label="Vérité home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>VÉRITÉ</span>
+        <small>Review intelligence</small>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary navigation">
+        <button class="nav-link is-active" type="button" data-view="analyse">Analyse</button>
+        <button class="nav-link" type="button" data-view="benchmark">Benchmark</button>
+        <button class="nav-link" type="button" data-view="method">Method</button>
+      </nav>
+
+      <a
+        class="source-link"
+        href="https://github.com/aaryabookseller16/Fake-Review-Classifier"
+        target="_blank"
+        rel="noreferrer"
+      >
+        View source <span aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <main id="main-content">
+      <section class="view is-active" id="analyse" data-view-panel="analyse">
+        <div class="hero-grid shell">
+          <div class="hero-copy reveal">
+            <p class="eyebrow"><span></span> Machine learning, without the theatre</p>
+            <h1>Can you trust<br />what you <em>read?</em></h1>
+            <p class="hero-intro">
+              An honest detector for computer-generated product reviews—built to show
+              its reasoning, its limits, and the experiment behind every result.
+            </p>
+          </div>
+
+          <div class="hero-aside reveal reveal-delay">
+            <div class="edition-note">
+              <span>Étude № 01</span>
+              <span>Sep. 2026</span>
+            </div>
+            <div class="hero-score">
+              <span class="score-value">94.88<sup>%</sup></span>
+              <p>Held-out accuracy<br />across 8,087 unseen reviews</p>
+            </div>
+            <div class="hero-seal" aria-hidden="true">
+              <svg viewBox="0 0 100 100">
+                <defs>
+                  <path id="seal-path" d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" />
+                </defs>
+                <text><textPath href="#seal-path">FROM SCRATCH • FULLY TESTED • </textPath></text>
+              </svg>
+              <span>V</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="analysis-wrap shell reveal">
+          <form class="analysis-card" id="analysis-form">
+            <div class="card-heading">
+              <div>
+                <p class="step-label">01 / Analyse a review</p>
+                <h2>Read between the lines.</h2>
+              </div>
+              <div class="model-status" id="model-status" role="status">
+                <span></span> Loading model
+              </div>
+            </div>
+
+            <div class="example-row" aria-label="Example reviews">
+              <span>Try an example</span>
+              <button type="button" class="text-chip" data-example="genuine">Genuine review</button>
+              <button type="button" class="text-chip" data-example="fake">Generated review</button>
+            </div>
+
+            <label class="sr-only" for="review-input">Product review text</label>
+            <div class="editor-shell">
+              <textarea
+                id="review-input"
+                maxlength="3000"
+                spellcheck="true"
+                placeholder="Paste a product review here…"
+                required
+              ></textarea>
+              <div class="editor-meta">
+                <span>English product reviews work best</span>
+                <span><b id="character-count">0</b> / 3,000</span>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="clear-button" id="clear-button">Clear</button>
+              <button type="submit" class="analyse-button" id="analyse-button" disabled>
+                <span>Analyse review</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </form>
+
+          <aside class="result-card" id="result-card" aria-live="polite">
+            <div class="empty-result" id="empty-result">
+              <span class="empty-number">?</span>
+              <div>
+                <p class="step-label">02 / Model verdict</p>
+                <h2>Your result<br />will appear here.</h2>
+                <p>The model runs entirely in your browser. Your review never leaves this page.</p>
+              </div>
+            </div>
+
+            <div class="result-content" id="result-content" hidden>
+              <div class="result-topline">
+                <p class="step-label">02 / Model verdict</p>
+                <span class="result-badge" id="result-badge"></span>
+              </div>
+              <div class="verdict-lockup">
+                <p class="verdict-kicker">This review reads as</p>
+                <h2 id="verdict-label">Genuine</h2>
+                <p id="verdict-copy"></p>
+              </div>
+
+              <div class="score-block">
+                <div class="score-meta">
+                  <span>Genuine</span>
+                  <span>Decision score <b id="score-value"></b></span>
+                  <span>Generated</span>
+                </div>
+                <div class="score-track">
+                  <span class="score-threshold" aria-hidden="true"></span>
+                  <span class="score-pin" id="score-pin" aria-hidden="true"></span>
+                </div>
+                <p>Threshold 0.500 · raw activation, not a calibrated probability</p>
+              </div>
+
+              <div class="signal-block">
+                <div class="signal-heading">
+                  <h3>Strongest matched signals</h3>
+                  <span id="matched-count"></span>
+                </div>
+                <div class="signal-list" id="signal-list"></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="privacy-strip shell">
+          <span>Private by design</span>
+          <p>Inference happens locally. No account, API, cookie, or uploaded text.</p>
+          <span>139,295 learned terms</span>
+        </div>
+      </section>
+
+      <section class="view shell" id="benchmark" data-view-panel="benchmark" hidden>
+        <header class="section-hero reveal">
+          <p class="eyebrow"><span></span> The evidence</p>
+          <h1>Representation beats<br /><em>optimisation.</em></h1>
+          <div class="section-deck">
+            <p>
+              Five controlled configurations. One held-out split. Changing the text
+              representation moves accuracy by 41 points; changing the learning
+              algorithm moves it by less than one.
+            </p>
+            <div class="section-index">02</div>
+          </div>
+        </header>
+
+        <div class="metric-ribbon reveal">
+          <article><span>Corpus</span><strong>40,432</strong><p>balanced reviews</p></article>
+          <article><span>Holdout</span><strong>8,087</strong><p>unseen reviews</p></article>
+          <article><span>ROC AUC</span><strong>0.9885</strong><p>best model</p></article>
+          <article><span>Feature gain</span><strong>+41.75<sup>pp</sup></strong><p>surface → TF-IDF</p></article>
+        </div>
+
+        <div class="benchmark-grid">
+          <article class="benchmark-panel reveal">
+            <div class="panel-heading">
+              <div><p class="step-label">Held-out accuracy</p><h2>The comparison</h2></div>
+              <span>Chance = 50%</span>
+            </div>
+            <div class="bar-chart" id="accuracy-chart" aria-label="Model accuracy comparison"></div>
+          </article>
+
+          <article class="benchmark-panel insight-panel reveal reveal-delay">
+            <p class="step-label">The finding</p>
+            <blockquote>Features mattered roughly <em>fifty times</em> more than the optimiser.</blockquote>
+            <p>
+              The from-scratch Adaline and scikit-learn baseline finish within 0.41
+              percentage points on identical TF-IDF features. That validates the custom
+              gradient descent while keeping the conclusion appropriately modest.
+            </p>
+            <div class="ratio-visual" aria-label="Relative impact: representation 41 points, algorithm less than 1 point">
+              <div><span style="--size: 100%"></span><b>Representation</b><em>~41 pp</em></div>
+              <div><span style="--size: 2%"></span><b>Algorithm</b><em>&lt;1 pp</em></div>
+            </div>
+          </article>
+        </div>
+
+        <article class="confusion-panel reveal">
+          <div class="panel-heading">
+            <div><p class="step-label">Error analysis</p><h2>Where the best model misses.</h2></div>
+            <p>TF-IDF + Adaline · 8,087 held-out reviews</p>
+          </div>
+          <div class="confusion-layout">
+            <div class="confusion-matrix" role="img" aria-label="Confusion matrix: 3,900 true genuine, 144 false positives, 270 false negatives, 3,773 true fake">
+              <div class="matrix-corner"></div><div class="matrix-axis">Predicted genuine</div><div class="matrix-axis">Predicted fake</div>
+              <div class="matrix-axis vertical">Actually genuine</div><div class="matrix-cell strong"><strong>3,900</strong><span>correct</span></div><div class="matrix-cell light"><strong>144</strong><span>false positive</span></div>
+              <div class="matrix-axis vertical">Actually fake</div><div class="matrix-cell mid"><strong>270</strong><span>false negative</span></div><div class="matrix-cell strong"><strong>3,773</strong><span>correct</span></div>
+            </div>
+            <div class="error-note">
+              <span class="note-mark">*</span>
+              <h3>Conservative by accident,<br />not by design.</h3>
+              <p>
+                The model produces fewer false positives than false negatives—a useful
+                tendency for moderation, where accusing a real customer is the costlier
+                error. A production system should tune that trade-off explicitly.
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="view shell" id="method" data-view-panel="method" hidden>
+        <header class="section-hero reveal">
+          <p class="eyebrow"><span></span> Under the bonnet</p>
+          <h1>Four lines of maths.<br /><em>No black box.</em></h1>
+          <div class="section-deck">
+            <p>
+              Adaline learns a linear decision boundary by minimising mean squared error.
+              The optimisation is written from scratch in NumPy; scikit-learn supplies
+              only pipeline plumbing and the comparison baseline.
+            </p>
+            <div class="section-index">03</div>
+          </div>
+        </header>
+
+        <div class="method-flow reveal">
+          <article><span>01</span><h2>Represent</h2><p>Convert reviews into sparse word and phrase weights with TF-IDF.</p></article>
+          <div class="flow-arrow">→</div>
+          <article><span>02</span><h2>Learn</h2><p>Update 139,295 weights with transparent batch gradient descent.</p></article>
+          <div class="flow-arrow">→</div>
+          <article><span>03</span><h2>Decide</h2><p>Threshold the continuous Adaline activation at 0.500.</p></article>
+        </div>
+
+        <div class="method-grid">
+          <article class="formula-card reveal">
+            <p class="step-label">Objective</p>
+            <div class="formula">L(w,b) = <span>1</span>/<small>n</small> Σ (yᵢ − (xᵢᵀw + b))²</div>
+            <p>A differentiable, convex loss surface with a global optimum—provided the learning rate is stable.</p>
+          </article>
+          <article class="code-card reveal reveal-delay">
+            <div class="code-top"><span>adaline.py</span><span>Python</span></div>
+            <pre><code><span>errors</span> = y - self.activation(
+    self.net_input(X)
+)
+self.w_ += self.lr * 2.0 * (
+    X.T @ errors
+) / n_samples
+self.b_ += self.lr * 2.0 * errors.mean()</code></pre>
+          </article>
+        </div>
+
+        <div class="honesty-grid reveal">
+          <article>
+            <span class="honesty-index">A</span>
+            <h3>Sparse by necessity</h3>
+            <p>The TF-IDF matrix would need roughly 35 GB if densified. Every operation preserves SciPy sparse matrices end to end.</p>
+          </article>
+          <article>
+            <span class="honesty-index">B</span>
+            <h3>Divergence fails loudly</h3>
+            <p>A large learning rate can explode while remaining a finite float. Explicit guards reject the run instead of returning silent garbage.</p>
+          </article>
+          <article>
+            <span class="honesty-index">C</span>
+            <h3>Limits are part of the result</h3>
+            <p>One dataset, one GPT-2 generator, one split. This is a research demonstration—not a universal truth machine.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer shell">
+      <a class="brand footer-brand" href="#analyse"><span class="brand-mark"></span><span>VÉRITÉ</span></a>
+      <p>Designed as an honest machine-learning study by Aarya Bookseller.</p>
+      <p>MIT License · <a href="https://osf.io/tyue9/" target="_blank" rel="noreferrer">Dataset source ↗</a></p>
+    </footer>
+  </body>
+</html>

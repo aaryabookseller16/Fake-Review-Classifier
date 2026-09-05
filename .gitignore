@@ -15,15 +15,15 @@ streamlit_env/
 .DS_Store
 
 # ---- Trained artifacts ----
-# models/*.joblib and reports/metrics.json ARE committed, deliberately: they
-# total ~7 MB and Streamlit Community Cloud serves the app straight from the
-# repo, with no build step available to train on deploy. Regenerate anytime
-# with `PYTHONPATH=src python -m fakereview.train`.
+# models/*.joblib and reports/metrics.json are committed deliberately so the
+# benchmark and browser export remain reproducible from a fresh clone.
 models/*.pkl
 reports/*.png
 
 # ---- Local editor / tooling config ----
 .claude/
+.vercel/
+node_modules/
 
 # Vault-local working notes (Second Brain convention), not public-repo content.
 CLAUDE.md
